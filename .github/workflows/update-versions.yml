@@ -1,0 +1,76 @@
+name: Update NixOS Search Versions
+
+on:
+  schedule:
+    # Run every 6 hours
+    - cron: '0 */6 * * *'
+  workflow_dispatch: # Allow manual triggering
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  update-versions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fetch version information
+        id: fetch-versions
+        run: |
+          # Fetch frontend version from version.nix
+          echo "Fetching frontend version..."
+          FRONTEND_VERSION=$(curl -s https://raw.githubusercontent.com/NixOS/nixos-search/main/version.nix | sed -n 's/.*frontend = "\([^"]*\)".*/\1/p')
+
+          # Fetch channel version from flake.nix
+          echo "Fetching channel version..."
+          CHANNEL_VERSION=$(curl -s https://raw.githubusercontent.com/NixOS/nixos-search/main/flake.nix | sed -n 's/.*system\.stateVersion = "\([^"]*\)".*/\1/p')
+
+          # Get current timestamp
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+          # Create JSON output
+          cat > versions.json << EOF
+          {
+            "frontend_version": "$FRONTEND_VERSION",
+            "channel_version": "$CHANNEL_VERSION",
+            "last_updated": "$TIMESTAMP",
+            "source": "https://github.com/NixOS/nixos-search"
+          }
+          EOF
+
+          echo "Generated versions.json:"
+          cat versions.json
+
+          # Set outputs for later steps
+          echo "frontend_version=$FRONTEND_VERSION" >> $GITHUB_OUTPUT
+          echo "channel_version=$CHANNEL_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Check for changes
+        id: check-changes
+        run: |
+          if git diff --quiet versions.json; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No changes detected in versions"
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Changes detected in versions"
+          fi
+
+      - name: Commit and push if changed
+        if: steps.check-changes.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add versions.json
+          git commit -m "Update NixOS versions - Frontend: ${{ steps.fetch-versions.outputs.frontend_version }}, Channel: ${{ steps.fetch-versions.outputs.channel_version }}"
+          git push
+
+      - name: Display version info
+        run: |
+          echo "Frontend Version: ${{ steps.fetch-versions.outputs.frontend_version }}"
+          echo "Channel Version: ${{ steps.fetch-versions.outputs.channel_version }}"

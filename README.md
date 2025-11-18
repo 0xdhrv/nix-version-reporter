@@ -91,8 +91,10 @@ This will fetch the current versions and generate `versions.json` in the current
 ## Requirements
 
 - `curl` for fetching remote files
-- `grep` with Perl regex support (`-P` flag)
+- `sed` for text processing
+- `bash` 4.0+ for array support
 - `git` for version control operations (in CI/CD)
+- `jq` for JSON parsing (in CI/CD workflow)
 
 ## Using the Version Data
 

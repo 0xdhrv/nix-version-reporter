@@ -22,33 +22,19 @@ jobs:
       - name: Fetch version information
         id: fetch-versions
         run: |
-          # Fetch frontend version from version.nix
-          echo "Fetching frontend version..."
-          FRONTEND_VERSION=$(curl -s https://raw.githubusercontent.com/NixOS/nixos-search/main/version.nix | sed -n 's/.*frontend = "\([^"]*\)".*/\1/p')
+          # Run the update script
+          chmod +x update-versions.sh
+          ./update-versions.sh
 
-          # Fetch channel version from flake.nix
-          echo "Fetching channel version..."
-          CHANNEL_VERSION=$(curl -s https://raw.githubusercontent.com/NixOS/nixos-search/main/flake.nix | sed -n 's/.*system\.stateVersion = "\([^"]*\)".*/\1/p')
-
-          # Get current timestamp
-          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-
-          # Create JSON output
-          cat > versions.json << EOF
-          {
-            "frontend_version": "$FRONTEND_VERSION",
-            "channel_version": "$CHANNEL_VERSION",
-            "last_updated": "$TIMESTAMP",
-            "source": "https://github.com/NixOS/nixos-search"
-          }
-          EOF
-
-          echo "Generated versions.json:"
-          cat versions.json
+          # Extract versions for outputs
+          FRONTEND_VERSION=$(jq -r '.nixos_search.frontend_version' versions.json)
+          CHANNEL_VERSION=$(jq -r '.nixos_search.channel_version' versions.json)
+          CHANNEL_COUNT=$(jq '.nixos_channels | length' versions.json)
 
           # Set outputs for later steps
           echo "frontend_version=$FRONTEND_VERSION" >> $GITHUB_OUTPUT
           echo "channel_version=$CHANNEL_VERSION" >> $GITHUB_OUTPUT
+          echo "channel_count=$CHANNEL_COUNT" >> $GITHUB_OUTPUT
 
       - name: Check for changes
         id: check-changes
@@ -67,10 +53,14 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add versions.json
-          git commit -m "Update NixOS versions - Frontend: ${{ steps.fetch-versions.outputs.frontend_version }}, Channel: ${{ steps.fetch-versions.outputs.channel_version }}"
+          git commit -m "Update NixOS versions - Search: ${{ steps.fetch-versions.outputs.channel_version }}, Channels: ${{ steps.fetch-versions.outputs.channel_count }}"
           git push
 
       - name: Display version info
         run: |
-          echo "Frontend Version: ${{ steps.fetch-versions.outputs.frontend_version }}"
-          echo "Channel Version: ${{ steps.fetch-versions.outputs.channel_version }}"
+          echo "NixOS Search Frontend Version: ${{ steps.fetch-versions.outputs.frontend_version }}"
+          echo "NixOS Search Channel Version: ${{ steps.fetch-versions.outputs.channel_version }}"
+          echo "Tracked Stable Channels: ${{ steps.fetch-versions.outputs.channel_count }}"
+          echo ""
+          echo "Full versions.json:"
+          cat versions.json

@@ -10,7 +10,7 @@
         {"channel": "23.11", "name": "nixos-23.11", "revision": "205fd4226592", "release": "nixos-23.11.7870.205fd4226592"},
         {"channel": "23.05", "name": "nixos-23.05", "revision": "70bdadeb94ff", "release": "nixos-23.05.5533.70bdadeb94ff"}
   ],
-  "last_updated": "2025-11-18T12:08:59Z",
+  "last_updated": "2025-11-18T18:07:40Z",
   "sources": {
     "nixos_search": "https://github.com/NixOS/nixos-search",
     "nixos_channels": "https://channels.nixos.org"

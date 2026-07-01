@@ -4,13 +4,13 @@
     "channel_version": "25.05"
   },
   "nixos_channels": [
-        {"channel": "26.05", "name": "nixos-26.05", "revision": "1f01958ffb5b", "release": "nixos-26.05.3705.1f01958ffb5b"},
-        {"channel": "25.11", "name": "nixos-25.11", "revision": "1d4e0f865d68", "release": "nixos-25.11.12475.1d4e0f865d68"},
+        {"channel": "26.05", "name": "nixos-26.05", "revision": "95ca1e203c07", "release": "nixos-26.05.3869.95ca1e203c07"},
+        {"channel": "25.11", "name": "nixos-25.11", "revision": "b6018f87da91", "release": "nixos-25.11.12484.b6018f87da91"},
         {"channel": "25.05", "name": "nixos-25.05", "revision": "ac62194c3917", "release": "nixos-25.05.813814.ac62194c3917"},
         {"channel": "24.11", "name": "nixos-24.11", "revision": "50ab793786d9", "release": "nixos-24.11.719113.50ab793786d9"},
         {"channel": "24.05", "name": "nixos-24.05", "revision": "b134951a4c9f", "release": "nixos-24.05.7376.b134951a4c9f"}
   ],
-  "last_updated": "2026-07-01T07:34:23Z",
+  "last_updated": "2026-07-01T13:00:31Z",
   "sources": {
     "nixos_search": "https://github.com/NixOS/nixos-search",
     "nixos_channels": "https://channels.nixos.org"

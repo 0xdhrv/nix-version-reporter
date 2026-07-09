@@ -1,6 +1,6 @@
 {
   "nixos_search": {
-    "frontend_version": "48",
+    "frontend_version": "",
     "channel_version": "25.05"
   },
   "nixos_channels": [
@@ -10,7 +10,7 @@
         {"channel": "24.11", "name": "nixos-24.11", "revision": "50ab793786d9", "release": "nixos-24.11.719113.50ab793786d9"},
         {"channel": "24.05", "name": "nixos-24.05", "revision": "b134951a4c9f", "release": "nixos-24.05.7376.b134951a4c9f"}
   ],
-  "last_updated": "2026-07-08T19:23:10Z",
+  "last_updated": "2026-07-09T02:53:39Z",
   "sources": {
     "nixos_search": "https://github.com/NixOS/nixos-search",
     "nixos_channels": "https://channels.nixos.org"

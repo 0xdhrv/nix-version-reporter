@@ -2,6 +2,8 @@
 
 Automated tracking of version information from the [NixOS Search](https://github.com/NixOS/nixos-search) project and NixOS stable channels.
 
+<a href="https://github.com/0xdhrv/nix-version-reporter/stargazers"><img src="https://shieldcn.dev/github/stars/0xdhrv/nix-version-reporter.svg?variant=secondary" alt="GitHub stars" /></a> <a href="https://github.com/0xdhrv/nix-version-reporter/commits"><img src="https://shieldcn.dev/github/commits/0xdhrv/nix-version-reporter.svg?variant=secondary" alt="Last commit" /></a> <a href="https://github.com/0xdhrv/nix-version-reporter/actions"><img src="https://shieldcn.dev/github/ci/0xdhrv/nix-version-reporter.svg?variant=secondary" alt="CI status" /></a>
+
 ## What This Tracks
 
 This repository automatically tracks and reports:
